@@ -1,0 +1,46 @@
+$dokka.format:gfm-v1
+$dokka.linkExtension:md
+$dokka.location:tech.skot.libraries.video.di////PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video.di/index.md
+$dokka.location:tech.skot.libraries.video.di//skvideoModule/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video.di/skvideo-module.md
+$dokka.location:tech.skot.libraries.video.di//skvideoViewInjector/#/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video.di/skvideo-view-injector.md
+$dokka.location:tech.skot.libraries.video.di/SKVideoViewInjector///PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video.di/-s-k-video-view-injector/index.md
+$dokka.location:tech.skot.libraries.video.di/SKVideoViewInjector/skVideo/#kotlin.String#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video.di/-s-k-video-view-injector/sk-video.md
+$dokka.location:tech.skot.libraries.video.di/SKVideoViewInjectorImpl///PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video.di/-s-k-video-view-injector-impl/index.md
+$dokka.location:tech.skot.libraries.video.di/SKVideoViewInjectorImpl/SKVideoViewInjectorImpl/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video.di/-s-k-video-view-injector-impl/-s-k-video-view-injector-impl.md
+$dokka.location:tech.skot.libraries.video.di/SKVideoViewInjectorImpl/skVideo/#kotlin.String#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video.di/-s-k-video-view-injector-impl/sk-video.md
+$dokka.location:tech.skot.libraries.video////PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/index.md
+$dokka.location:tech.skot.libraries.video/SKVideo///PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/-s-k-video/index.md
+$dokka.location:tech.skot.libraries.video/SKVideo/SKVideo/#kotlin.String#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/-s-k-video/-s-k-video.md
+$dokka.location:tech.skot.libraries.video/SKVideo/onPause/#/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/-s-k-video/on-pause.md
+$dokka.location:tech.skot.libraries.video/SKVideo/onResume/#/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/-s-k-video/on-resume.md
+$dokka.location:tech.skot.libraries.video/SKVideo/playing/#/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/-s-k-video/playing.md
+$dokka.location:tech.skot.libraries.video/SKVideo/sound/#/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/-s-k-video/sound.md
+$dokka.location:tech.skot.libraries.video/SKVideo/view/#/PointingToDeclaration/viewmodel/viewmodel/tech.skot.libraries.video/-s-k-video/view.md
+$dokka.location:tech.skot.libraries.video/SKVideoVC///PointingToDeclaration/viewcontract/viewcontract/tech.skot.libraries.video/-s-k-video-v-c/index.md
+$dokka.location:tech.skot.libraries.video/SKVideoVC/onPause/#/PointingToDeclaration/viewcontract/viewcontract/tech.skot.libraries.video/-s-k-video-v-c/on-pause.md
+$dokka.location:tech.skot.libraries.video/SKVideoVC/onResume/#/PointingToDeclaration/viewcontract/viewcontract/tech.skot.libraries.video/-s-k-video-v-c/on-resume.md
+$dokka.location:tech.skot.libraries.video/SKVideoVC/playing/#/PointingToDeclaration/viewcontract/viewcontract/tech.skot.libraries.video/-s-k-video-v-c/playing.md
+$dokka.location:tech.skot.libraries.video/SKVideoVC/sound/#/PointingToDeclaration/viewcontract/viewcontract/tech.skot.libraries.video/-s-k-video-v-c/sound.md
+$dokka.location:tech.skot.libraries.video/SKVideoVC/url/#/PointingToDeclaration/viewcontract/viewcontract/tech.skot.libraries.video/-s-k-video-v-c/url.md
+$dokka.location:tech.skot.libraries.video/SKVideoView///PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view/index.md
+$dokka.location:tech.skot.libraries.video/SKVideoView/SKVideoView/#tech.skot.libraries.video.SKVideoViewProxy#tech.skot.core.components.SKActivity#androidx.fragment.app.Fragment?#com.google.android.exoplayer2.ui.PlayerView#com.google.android.exoplayer2.SimpleExoPlayer/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view/-s-k-video-view.md
+$dokka.location:tech.skot.libraries.video/SKVideoView/proxy/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view/proxy.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy///PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/index.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/SKVideoViewProxy/#kotlin.String#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/-s-k-video-view-proxy.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/bindTo/#tech.skot.core.components.SKActivity#androidx.fragment.app.Fragment?#com.google.android.exoplayer2.ui.PlayerView#kotlin.Boolean/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/bind-to.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/onPause/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/on-pause.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/onRemove/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/on-remove.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/onResume/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/on-resume.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/player/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/player.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/playing/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/playing.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/sound/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/sound.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/updatePlaying/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/update-playing.md
+$dokka.location:tech.skot.libraries.video/SKVideoViewProxy/url/#/PointingToDeclaration/viewlegacy/viewlegacy/tech.skot.libraries.video/-s-k-video-view-proxy/url.md
+module:viewcontract
+tech.skot.libraries.video
+module:viewlegacy
+tech.skot.libraries.video
+tech.skot.libraries.video.di
+module:viewmodel
+tech.skot.libraries.video
+tech.skot.libraries.video.di
