@@ -8,7 +8,7 @@ Elle est basée sur ExoPlayer
 
 Pour utiliser la librairie vous devez ajouter la ligne suivante à votre fichier _skot_librairies.properties_
 
-`com.github.MathieuScotet.sk-video:0.0.1-alpha45,tech.skot.libraries.video.di.skvideoModule`
+`com.github.skot-framework.sk-video:0.0.1_1.0.0-alpha55,tech.skot.libraries.video.di.skvideoModule`
 
 Cette libririe consiste en un seul SKComponent:
 
