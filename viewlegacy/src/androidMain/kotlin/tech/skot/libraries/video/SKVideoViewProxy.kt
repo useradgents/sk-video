@@ -77,17 +77,14 @@ class SKVideoViewProxy(
     override fun bindTo(
         activity: SKActivity,
         fragment: Fragment?,
-        binding: PlayerView,
-        collectingObservers: Boolean
+        binding: PlayerView
     ): SKVideoView {
         return (player ?: buildPlayer(
             playNow = playing,
             positionMs = savedPosition,
             withSound = sound
         ).also { player = it }).let { thePlayer ->
-            SKVideoView(this, activity, fragment, binding, thePlayer).apply {
-                collectObservers = collectingObservers
-            }
+            SKVideoView(this, activity, fragment, binding, thePlayer)
         }
 
     }
