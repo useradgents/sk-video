@@ -5,5 +5,5 @@ plugins {
 }
 
 dependencies {
-    api("com.google.android.exoplayer:exoplayer:2.15.0")
+    api("com.google.android.exoplayer:exoplayer:2.16.0")
 }

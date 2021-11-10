@@ -1,6 +1,7 @@
 package tech.skot.libraries.video
 
 import androidx.fragment.app.Fragment
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -16,11 +17,11 @@ class SKVideoViewProxy(
 ) : SKComponentViewProxy<PlayerView>(), SKVideoVC {
 
 
-    var player: SimpleExoPlayer? = null
+    var player: ExoPlayer? = null
 
     private fun buildPlayer(playNow: Boolean, positionMs: Long, withSound: Boolean) =
-        SimpleExoPlayer.Builder(get()).build().apply {
-            seekTo(currentWindowIndex, positionMs)
+        ExoPlayer.Builder(get()).build().apply {
+            seekTo(currentMediaItemIndex, positionMs)
             playWhenReady = playNow
             repeatMode = Player.REPEAT_MODE_ALL
             addMediaItem(MediaItem.fromUri(url))
