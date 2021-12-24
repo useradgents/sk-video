@@ -2,16 +2,18 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        mavenLocal()
-        maven {
-            url = uri("https://jitpack.io")
-        }
+//        mavenLocal()
+
     }
 
     dependencies {
-        classpath("com.github.skot-framework.skot:plugin:${Versions.framework}")
+        classpath("${Versions.frameworkGroup}:plugin:${Versions.framework}")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.5.30")
     }
+}
+
+plugins {
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 allprojects {
@@ -21,14 +23,25 @@ allprojects {
 
     repositories {
         google()
-        mavenLocal()
+//        mavenLocal()
         mavenCentral()
-        maven {
-            url = uri("https://jitpack.io")
-        }
     }
 
     apply(plugin = "maven-publish")
     apply(plugin = "org.jetbrains.dokka")
 
+}
+
+val publication = getPublication(project)
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            stagingProfileId.set(publication.sonatypeStagingProfileId)
+            username.set(publication.ossrhUsername)
+            password.set(publication.ossrhPassword)
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
 }
