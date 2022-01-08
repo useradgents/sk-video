@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
 import tech.skot.core.components.SKActivity
 import tech.skot.core.components.SKComponentViewProxy
