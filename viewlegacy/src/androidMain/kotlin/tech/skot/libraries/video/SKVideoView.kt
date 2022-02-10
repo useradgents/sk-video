@@ -1,9 +1,7 @@
 package tech.skot.libraries.video
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
 import tech.skot.core.components.SKActivity
@@ -20,15 +18,13 @@ class SKVideoView(
     init {
         binding.player = player
 
-        lifecycle.addObserver(object: LifecycleObserver {
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun onDestroy() {
+        lifecycle.addObserver(object:DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
                 proxy.player?.release()
                 proxy.player = null
                 binding.player = null
             }
-
         })
 
     }

@@ -1,6 +1,5 @@
 package tech.skot.libraries.video.di
 
-import tech.skot.core.di.BaseInjector
 import tech.skot.core.di.InjectorMock
 import tech.skot.core.di.module
 import tech.skot.libraries.video.SKVideoViewMock

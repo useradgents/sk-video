@@ -5,6 +5,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
+import tech.skot.core.SKLog
 import tech.skot.core.components.SKActivity
 import tech.skot.core.components.SKComponentViewProxy
 import tech.skot.core.di.get
@@ -39,16 +40,12 @@ class SKVideoViewProxy(
     override var playing: Boolean = playingInitial
         set(value) {
             field = value
-            if (value) {
-                updatePlaying()
-            } else {
-                updatePlaying()
-            }
+            updatePlaying()
 
         }
 
     private var savedPosition: Long = 1
-    private var resumed: Boolean = false
+    private var resumed: Boolean = true
     override fun onPause() {
         resumed = false
         savedPosition = player?.currentPosition ?: 1
