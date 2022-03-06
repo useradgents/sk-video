@@ -18,7 +18,7 @@ class SKVideoView(
     init {
         binding.player = player
 
-        lifecycle.addObserver(object:DefaultLifecycleObserver {
+        lifecycleOwner.lifecycle.addObserver(object:DefaultLifecycleObserver {
             override fun onDestroy(owner: LifecycleOwner) {
                 super.onDestroy(owner)
                 proxy.player?.release()
