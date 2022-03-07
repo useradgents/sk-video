@@ -17,4 +17,4 @@ interface SKVideoViewInjector {
 
 val skvideoViewInjector: SKVideoViewInjector = get()
 
-val skAudio: SKAudio? = get<SKVideoViewInjector>().skAudio()?.let { SKAudio(it) }
+val skAudio: SKAudio? = skvideoViewInjector.skAudio()?.let { SKAudio(it) }

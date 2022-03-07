@@ -7,7 +7,7 @@ package tech.skot.libraries.video
  */
 interface SKAudioVC {
 
-    data class Track(val title:String, val url:String)
+    data class Track(val title:String, val url:String, val image:String?)
     data class State(val track:Track?, val playing:Boolean, val position:Long?, val duration:Long?)
 
     var playing: Boolean
@@ -20,6 +20,6 @@ interface SKAudioVC {
 
     fun setCurrentTrack(track: Track)
 
-    fun destroy()
+    fun release()
 
 }

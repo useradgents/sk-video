@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import tech.skot.core.SKLog
 
 open class SKAudioService : Service() {
 
@@ -29,10 +30,13 @@ open class SKAudioService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-
+        SKLog.d("--------- SKAudioService    onCreate")
         skAudioViewProxy.let {
             if (it == null) {
                 skAudioViewProxy = SKAudioViewProxy(applicationContext)
+            }
+            else {
+                it.renewIfNeeded(applicationContext)
             }
         }
 
@@ -72,7 +76,7 @@ open class SKAudioService : Service() {
     }
 
     private fun showNotification() {
-        if (skAudioViewProxy?.player?.let { it.isLoading || it.isPlaying } == true) {
+        if (skAudioViewProxy?.player?.let { it.isPlaying } == true) {
             val notification = NotificationCompat.Builder(this, createChannel()).apply {
                 setContentTitle("${skAudioViewProxy?.state?.track?.title}")
                 setOngoing(true)
@@ -88,9 +92,9 @@ open class SKAudioService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        SKLog.d("--------- SKAudioService    onDestroy")
         serviceJob.cancel()
-        skAudioViewProxy?.destroy()
-        skAudioViewProxy = null
+        skAudioViewProxy?.release()
 
     }
 
