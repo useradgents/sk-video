@@ -29,15 +29,18 @@ class TestViewSKAudio: SKTestView() {
 
     val track1 = SKAudioVC.Track(
         title = "track1",
-        url = "https://sounds-mp3.com/mp3/0011247.mp3"
+        url = "https://sounds-mp3.com/mp3/0011247.mp3",
+        image = null
     )
     val track2 = SKAudioVC.Track(
         title = "track2",
-        url = "https://sounds-mp3.com/mp3/0011272.mp3"
+        url = "https://sounds-mp3.com/mp3/0011272.mp3",
+        image = null
     )
     val track3 = SKAudioVC.Track(
         title = "track3",
-        url = "https://sounds-mp3.com/mp3/0011244.mp3"
+        url = "https://sounds-mp3.com/mp3/0011244.mp3",
+        image = null
     )
 
     @Test
@@ -49,7 +52,7 @@ class TestViewSKAudio: SKTestView() {
         testComponent(proxyButton) {
 
 
-            proxyAudio.media = listOf(track1, track2, track3)
+            proxyAudio.trackList = listOf(track1, track2, track3)
 //            proxyAudio.onCurrentTrack = {
 //                SKLog.d("Playing $it")
 //            }
@@ -76,7 +79,7 @@ class TestViewSKAudio: SKTestView() {
         testComponent(proxyButton) {
 
 
-            proxyAudio.media = listOf(track1, track2, track3)
+            proxyAudio.trackList = listOf(track1, track2, track3)
 
             proxyAudio.onState = {
                 SKLog.d("staet: $it")
@@ -99,7 +102,7 @@ class TestViewSKAudio: SKTestView() {
         testComponent(proxyButton) {
 
 
-            proxyAudio.media = listOf(track1, track2, track3)
+            proxyAudio.trackList = listOf(track1, track2, track3)
 
             proxyAudio.onState = {
                 SKLog.d("state: $it")

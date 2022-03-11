@@ -6,7 +6,6 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Timeline
 import kotlinx.coroutines.*
-import tech.skot.core.SKLog
 
 var skAudioViewProxy: SKAudioViewProxy? = null
 
@@ -15,6 +14,8 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
     override var progressRefreshInterval: Long = 1000L
 
     private val mapMediaItemTrack: MutableMap<MediaItem, SKAudioVC.Track> = mutableMapOf()
+
+    var keepService: String? = null
 
     var state: SKAudioVC.State =
         SKAudioVC.State(track = null, playing = false, position = null, duration = null)
@@ -30,7 +31,7 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
             track = track,
             playing = _playing,
             position = track?.let { player.currentPosition }?.let { if (it > 0) it else null },
-            duration = track?.let { player.currentDuration()},
+            duration = track?.let { player.currentDuration() },
         )
     }
 
@@ -42,19 +43,20 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
         get() = _player ?: throw IllegalStateException("Player released")
 
     fun renewIfNeeded(applicationContext: Context) {
-        SKLog.d("@SKAudio    renewIfNeeded   -----> _player $_player")
         if (_player == null) {
-            SKLog.d("@SKAudio    renew   -----> media $media")
-            SKLog.d("@SKAudio    renew   -----> state $state")
             val toRestoredTrack = state.track
             _player = buildPlayer(applicationContext)
-            setMediaListToPlayer(media)
+            setMediaListToPlayer(trackList)
             if (toRestoredTrack != null) {
-                player.seekTo(media.indexOf(toRestoredTrack), savedPosition)
-                state = SKAudioVC.State(track = toRestoredTrack, playing = _playing, position = savedPosition, duration = saveDuration)
+                player.seekTo(trackList.indexOf(toRestoredTrack), savedPosition)
+                state = SKAudioVC.State(
+                    track = toRestoredTrack,
+                    playing = _playing,
+                    position = savedPosition,
+                    duration = saveDuration
+                )
 
-            }
-            else {
+            } else {
                 player.seekTo(0, 0)
             }
 
@@ -121,9 +123,11 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
         }
 
 
-    override var media: List<SKAudioVC.Track> = emptyList()
+    private var _media: List<SKAudioVC.Track> = emptyList()
+    override var trackList: List<SKAudioVC.Track>
+        get() = _media
         set(value) {
-            field = value
+            _media = value
             player.clearMediaItems()
             mapMediaItemTrack.clear()
             setMediaListToPlayer(value)
@@ -133,12 +137,36 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
             player.updateState()
         }
 
+    override fun addTrack(track: SKAudioVC.Track) {
+        if (trackList.isEmpty()) {
+            trackList = listOf(track)
+        } else {
+            player.addMediaItem(
+                track.toMediaItem().also { mapMediaItemTrack[it] = track }
+            )
+            if (!player.isPlaying) {
+                player.seekTo(player.mediaItemCount - 1, 0)
+            }
+            _media = _media + track
+        }
+    }
+
+
+    override fun hasNext():Boolean {
+        return player.hasNextMediaItem()
+    }
+
+    override fun seekToLastTrack() {
+        if (hasNext()) {
+            player.seekTo(player.mediaItemCount - 1, 0)
+        }
+    }
+
+
     private fun setMediaListToPlayer(media: List<SKAudioVC.Track>) {
         player.addMediaItems(
             media.map { track ->
-                MediaItem.Builder()
-                    .setUri(track.url)
-                    .build()
+                track.toMediaItem()
                     .also {
                         mapMediaItemTrack[it] = track
                     }
@@ -148,8 +176,12 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
         player.pause()
     }
 
+    private fun SKAudioVC.Track.toMediaItem() = MediaItem.Builder()
+        .setUri(url)
+        .build()
+
     override fun setCurrentTrack(track: SKAudioVC.Track) {
-        val index = media.indexOf(track)
+        val index = trackList.indexOf(track)
         if (index != -1) {
             player.seekTo(index, 0)
         }
@@ -178,8 +210,8 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
     }
 
 
-    private var savedPosition:Long = 0
-    private var saveDuration:Long = 0
+    private var savedPosition: Long = 0
+    private var saveDuration: Long = 0
     override fun release() {
         savedPosition = _player?.currentPosition ?: 0L
         saveDuration = player.contentDuration

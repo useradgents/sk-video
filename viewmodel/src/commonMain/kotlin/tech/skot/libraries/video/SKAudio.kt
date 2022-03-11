@@ -6,7 +6,13 @@ import tech.skot.model.SKManualData
 class SKAudio(private val proxy:SKAudioVC) {
 
     fun setPlayList(tracks:List<SKAudioVC.Track>) {
-        proxy.media = tracks
+        proxy.trackList = tracks
+    }
+
+    fun addTrackIfNotIn(track: SKAudioVC.Track) {
+        if (!proxy.trackList.contains(track)) {
+            proxy.addTrack(track)
+        }
     }
 
     fun play() {
@@ -19,6 +25,14 @@ class SKAudio(private val proxy:SKAudioVC) {
 
     fun setCurrentTrack(track: SKAudioVC.Track) {
         proxy.setCurrentTrack(track)
+    }
+
+    fun hasNext():Boolean {
+        return proxy.hasNext()
+    }
+
+    fun seekToLastTrack() {
+        proxy.seekToLastTrack()
     }
 
     fun setProgressRefreshInterval(ms:Long) {

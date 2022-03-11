@@ -11,7 +11,11 @@ interface SKAudioVC {
     data class State(val track:Track?, val playing:Boolean, val position:Long?, val duration:Long?)
 
     var playing: Boolean
-    var media: List<Track>
+    var trackList: List<Track>
+
+    fun addTrack(track:Track)
+    fun hasNext():Boolean
+    fun seekToLastTrack()
 
     var progressRefreshInterval:Long
 

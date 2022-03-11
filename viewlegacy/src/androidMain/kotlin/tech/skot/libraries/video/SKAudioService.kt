@@ -1,18 +1,13 @@
 package tech.skot.libraries.video
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import tech.skot.core.SKLog
+import kotlinx.coroutines.*
+import tech.skot.core.components.SKActivity
 
 open class SKAudioService : Service() {
 
@@ -30,25 +25,30 @@ open class SKAudioService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        SKLog.d("--------- SKAudioService    onCreate")
         skAudioViewProxy.let {
             if (it == null) {
                 skAudioViewProxy = SKAudioViewProxy(applicationContext)
-            }
-            else {
+            } else {
                 it.renewIfNeeded(applicationContext)
             }
         }
 
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
+    private var foregroundCounter = 0
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_BACKGROUND -> {
-                showNotification()
+                foregroundCounter--
+                if (foregroundCounter <= 0) {
+                    showNotification()
+                }
+
             }
             ACTION_FOREGROUND -> {
+                updateNotificationJob?.cancel()
+                foregroundCounter++
                 stopForeground(true)
             }
         }
@@ -75,24 +75,72 @@ open class SKAudioService : Service() {
 
     }
 
-    private fun showNotification() {
-        if (skAudioViewProxy?.player?.let { it.isPlaying } == true) {
-            val notification = NotificationCompat.Builder(this, createChannel()).apply {
-                setContentTitle("${skAudioViewProxy?.state?.track?.title}")
+    private fun pendingIntent(): PendingIntent {
+        val notificationIntent = Intent(this, SKActivity.launchActivityClass)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.getActivity(
+                this,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                this,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        }
+    }
+
+    private fun buildNotification(): Notification? {
+        val playingTrack = if (skAudioViewProxy?.player?.isPlaying == true) {
+            skAudioViewProxy?.state?.track
+        } else null
+        return if (skAudioViewProxy?.keepService != null || playingTrack != null) {
+            NotificationCompat.Builder(this, createChannel()).apply {
+                setContentTitle(playingTrack?.title ?: skAudioViewProxy?.keepService ?: "---")
                 setOngoing(true)
                 setWhen(0)
+                setContentIntent(pendingIntent())
                 setSmallIcon(android.R.drawable.presence_audio_online)
                 priority = NotificationCompat.PRIORITY_LOW
             }.build()
+        } else {
+            null
+        }
+    }
 
-            startForeground(1, notification)
+
+    var updateNotificationJob: Job? = null
+
+    private fun showNotification() {
+        updateNotificationJob?.cancel()
+        buildNotification()?.let {
+            startForeground(1, it)
+            updateNotificationJob = serviceScope.launch {
+                while (true) {
+                    delay(1000)
+                    buildNotification().let { notification ->
+                        val notificationManager =
+                            getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+                        if (notification == null) {
+                            notificationManager?.cancel(1)
+                            updateNotificationJob?.cancel()
+                            this@SKAudioService.stopSelf()
+                        } else {
+                            notificationManager?.notify(1, notification)
+                        }
+                    }
+                }
+            }
         }
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        SKLog.d("--------- SKAudioService    onDestroy")
         serviceJob.cancel()
         skAudioViewProxy?.release()
 
