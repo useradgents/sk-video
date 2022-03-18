@@ -13,6 +13,8 @@ interface SKAudioVC {
     var playing: Boolean
     var trackList: List<Track>
 
+    var keepActiveInBackGroundWithMessageIfNothingPlayed:String?
+
     fun addTrack(track:Track)
     fun hasNext():Boolean
     fun seekToLastTrack()

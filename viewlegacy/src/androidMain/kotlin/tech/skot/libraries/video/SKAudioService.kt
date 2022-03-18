@@ -95,12 +95,11 @@ open class SKAudioService : Service() {
     }
 
     private fun buildNotification(): Notification? {
-        val playingTrack = if (skAudioViewProxy?.player?.isPlaying == true) {
-            skAudioViewProxy?.state?.track
-        } else null
-        return if (skAudioViewProxy?.keepService != null || playingTrack != null) {
+        val playingTrack = skAudioViewProxy?.state?.track
+
+        return if (skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed != null || playingTrack != null) {
             NotificationCompat.Builder(this, createChannel()).apply {
-                setContentTitle(playingTrack?.title ?: skAudioViewProxy?.keepService ?: "---")
+                setContentTitle(playingTrack?.title ?: skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed ?: "---")
                 setOngoing(true)
                 setWhen(0)
                 setContentIntent(pendingIntent())

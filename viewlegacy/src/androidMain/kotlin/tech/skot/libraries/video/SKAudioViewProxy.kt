@@ -15,7 +15,7 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
 
     private val mapMediaItemTrack: MutableMap<MediaItem, SKAudioVC.Track> = mutableMapOf()
 
-    var keepService: String? = null
+    override var keepActiveInBackGroundWithMessageIfNothingPlayed: String? = null
 
     var state: SKAudioVC.State =
         SKAudioVC.State(track = null, playing = false, position = null, duration = null)
@@ -144,11 +144,9 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
             player.addMediaItem(
                 track.toMediaItem().also { mapMediaItemTrack[it] = track }
             )
-            if (!player.isPlaying) {
-                player.seekTo(player.mediaItemCount - 1, 0)
-            }
             _media = _media + track
         }
+        player.updateState()
     }
 
 
@@ -159,6 +157,7 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
     override fun seekToLastTrack() {
         if (hasNext()) {
             player.seekTo(player.mediaItemCount - 1, 0)
+            player.updateState()
         }
     }
 
@@ -184,6 +183,7 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
         val index = trackList.indexOf(track)
         if (index != -1) {
             player.seekTo(index, 0)
+            player.updateState()
         }
     }
 

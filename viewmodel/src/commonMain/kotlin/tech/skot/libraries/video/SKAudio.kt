@@ -3,9 +3,9 @@ package tech.skot.libraries.video
 import tech.skot.model.SKData
 import tech.skot.model.SKManualData
 
-class SKAudio(private val proxy:SKAudioVC) {
+class SKAudio(private val proxy: SKAudioVC) {
 
-    fun setPlayList(tracks:List<SKAudioVC.Track>) {
+    fun setPlayList(tracks: List<SKAudioVC.Track>) {
         proxy.trackList = tracks
     }
 
@@ -19,6 +19,12 @@ class SKAudio(private val proxy:SKAudioVC) {
         proxy.playing = true
     }
 
+    var playing:Boolean
+        get() = proxy.playing
+    set(value) {
+        proxy.playing = value
+    }
+
     fun pause() {
         proxy.playing = false
     }
@@ -27,7 +33,7 @@ class SKAudio(private val proxy:SKAudioVC) {
         proxy.setCurrentTrack(track)
     }
 
-    fun hasNext():Boolean {
+    fun hasNext(): Boolean {
         return proxy.hasNext()
     }
 
@@ -35,18 +41,29 @@ class SKAudio(private val proxy:SKAudioVC) {
         proxy.seekToLastTrack()
     }
 
-    fun setProgressRefreshInterval(ms:Long) {
+    fun setProgressRefreshInterval(ms: Long) {
         proxy.progressRefreshInterval = ms
     }
+
+    var keepActiveInBackGroundWithMessageIfNothingPlayed: String?
+        get() = proxy.keepActiveInBackGroundWithMessageIfNothingPlayed
+        set(value) {
+            proxy.keepActiveInBackGroundWithMessageIfNothingPlayed = value
+        }
+
     init {
         setProgressRefreshInterval(1000L)
     }
 
     private val _state = SKManualData<SKAudioVC.State?>(null)
-    val state:SKData<SKAudioVC.State?> = _state
+    val state: SKData<SKAudioVC.State?> = _state
 
-    private val _durations = SKManualData<Map<SKAudioVC.Track,Long>?>(null)
-    val durations:SKData<Map<SKAudioVC.Track,Long>?> = _durations
+    val currentState:SKAudioVC.State?
+        get() = _state.value
+
+    private val _durations = SKManualData<Map<SKAudioVC.Track, Long>?>(null)
+    val durations: SKData<Map<SKAudioVC.Track, Long>?> = _durations
+
 
     init {
         proxy.onState = {
