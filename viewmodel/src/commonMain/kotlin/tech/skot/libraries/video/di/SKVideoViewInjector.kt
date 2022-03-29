@@ -8,6 +8,7 @@ import tech.skot.libraries.video.SKVideoVC
 interface SKVideoViewInjector {
     fun skVideo(
         url: String,
+        useCache : Boolean,
         playingInitial: Boolean,
         soundInitial: Boolean
     ): SKVideoVC

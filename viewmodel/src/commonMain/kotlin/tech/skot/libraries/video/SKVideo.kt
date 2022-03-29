@@ -15,12 +15,19 @@ import tech.skot.libraries.video.di.skvideoViewInjector
  * @property playing indicate if the video should play, play if true, pause if false
  *
  */
-class SKVideo(url: String, playingInitial: Boolean = true, soundInitial: Boolean = false) :
+class SKVideo(
+    url: String,
+    useCache: Boolean = false,
+    playingInitial: Boolean = true,
+    soundInitial: Boolean = false
+) :
     SKComponent<SKVideoVC>() {
 
     override val view: SKVideoVC = skvideoViewInjector.skVideo(
-        url = url, playingInitial =
-        playingInitial, soundInitial = soundInitial
+        url = url,
+        useCache = useCache,
+        playingInitial = playingInitial,
+        soundInitial = soundInitial
     )
 
     var playing: Boolean = playingInitial
