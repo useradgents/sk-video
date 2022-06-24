@@ -5,8 +5,8 @@ import tech.skot.core.components.SKActivity
 
 abstract class SKAudioActivity(private val audioService: Class<out SKAudioService>) : SKActivity() {
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         startService(Intent(applicationContext, audioService).apply {
             action = SKAudioService.ACTION_FOREGROUND
         })
