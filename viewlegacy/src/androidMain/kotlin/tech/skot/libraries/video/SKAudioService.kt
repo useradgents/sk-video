@@ -36,19 +36,13 @@ open class SKAudioService : Service() {
     }
 
 
-    private var foregroundCounter = 0
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_BACKGROUND -> {
-                foregroundCounter--
-                if (foregroundCounter <= 0) {
-                    showNotification()
-                }
-
+                showNotification()
             }
             ACTION_FOREGROUND -> {
                 updateNotificationJob?.cancel()
-                foregroundCounter++
                 stopForeground(true)
             }
         }
@@ -99,7 +93,8 @@ open class SKAudioService : Service() {
 
         return if (skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed != null || playingTrack != null) {
             NotificationCompat.Builder(this, createChannel()).apply {
-                setContentTitle(playingTrack?.title ?: skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed ?: "---")
+                setContentTitle(playingTrack?.title
+                    ?: skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed ?: "---")
                 setOngoing(true)
                 setWhen(0)
                 setContentIntent(pendingIntent())
