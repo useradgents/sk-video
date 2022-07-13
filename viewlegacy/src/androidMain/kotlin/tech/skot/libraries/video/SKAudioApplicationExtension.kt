@@ -11,11 +11,13 @@ fun Application.bindAudioService(audioService: Class<out SKAudioService>) {
 
     ProcessLifecycleOwner.get().lifecycle.addObserver(
         object : DefaultLifecycleObserver {
-            override fun onStart(owner: LifecycleOwner) {
-                super.onStart(owner)
+
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
                 startService(Intent(applicationContext, audioService).apply {
                     action = SKAudioService.ACTION_FOREGROUND
                 })
+
             }
 
             override fun onStop(owner: LifecycleOwner) {
