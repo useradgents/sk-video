@@ -10,9 +10,10 @@ class SKVideoViewInjectorMock : SKVideoViewInjector {
         url: String,
         useCache: Boolean,
         playingInitial: Boolean,
-        soundInitial: Boolean
+        soundInitial: Boolean,
+        onFullScreen: ((fullScreen:Boolean)->Unit)?
     ) =
-        SKVideoViewMock(url, useCache, playingInitial, soundInitial)
+        SKVideoViewMock(url, useCache, onFullScreen, playingInitial, soundInitial)
 
     override fun skAudio() = SKAudioViewMock()
 }

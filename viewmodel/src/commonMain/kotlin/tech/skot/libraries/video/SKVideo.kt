@@ -19,15 +19,17 @@ class SKVideo(
     url: String,
     useCache: Boolean = false,
     playingInitial: Boolean = true,
-    soundInitial: Boolean = false
+    soundInitial: Boolean = false,
+    onFullScreen: ((fullScreen: Boolean) -> Unit)? = null,
 ) :
     SKComponent<SKVideoVC>() {
 
     override val view: SKVideoVC = skvideoViewInjector.skVideo(
         url = url,
         useCache = useCache,
+        onFullScreen = onFullScreen,
         playingInitial = playingInitial,
-        soundInitial = soundInitial
+        soundInitial = soundInitial,
     )
 
     var playing: Boolean = playingInitial
@@ -49,4 +51,12 @@ class SKVideo(
     fun onResume() {
         view.onResume()
     }
+
+    fun setCurrentPosition(position: Long) {
+        view.setCurrentPosition(position)
+    }
+
+    val currentPosition:Long?
+        get() = view.currentPosition
+
 }

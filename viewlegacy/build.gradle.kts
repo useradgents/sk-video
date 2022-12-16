@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    api("com.google.android.exoplayer:exoplayer:2.18.0")
+    api("com.google.android.exoplayer:exoplayer:2.18.2")
     implementation("androidx.lifecycle:lifecycle-process:2.5.0")
 }
 
@@ -21,7 +21,7 @@ if (!localPublication) {
             artifact(javadocJar.get())
 
             pom {
-                name.set(project.name)
+                name.set("SK-Video " + project.name)
                 description.set("${project.name} module for SK-Video skot library")
                 url.set("https://github.com/skot-framework/sk-video")
                 licenses {

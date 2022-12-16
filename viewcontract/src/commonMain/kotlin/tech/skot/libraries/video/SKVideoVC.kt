@@ -11,7 +11,7 @@ import tech.skot.core.components.SKLayoutIsSimpleView
  * Les méthodes onPause et onResume doivent être appelées par le ViewModel
  * sur les onPause et onResume du SKScreen contenant le composant
  *
- * 
+ *
  * La vidéo est lue si le composant est "resumed" et si la propriété 'playing' est à true
  *
  * @property url chaîne fixe donnant l'url de la vidéo à lire
@@ -21,11 +21,17 @@ import tech.skot.core.components.SKLayoutIsSimpleView
  *
  */
 @SKLayoutIsSimpleView
-interface SKVideoVC: SKComponentVC {
-    val url:String
-    val useCache : Boolean
-    var playing:Boolean
-    var sound:Boolean
+interface SKVideoVC : SKComponentVC {
+    val url: String
+    val useCache: Boolean
+    var playing: Boolean
+    var sound: Boolean
+
+    val onFullScreen: ((fullScreen: Boolean) -> Unit)?
+
+    val currentPosition: Long?
+
+    fun setCurrentPosition(position: Long)
 
     /**
      * méthode à appeler sur le onPause de l'écran contenant

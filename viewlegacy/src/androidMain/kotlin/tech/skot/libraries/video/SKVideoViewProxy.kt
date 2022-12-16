@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
@@ -16,14 +16,16 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import tech.skot.core.components.SKActivity
 import tech.skot.core.components.SKComponentViewProxy
 import tech.skot.core.di.get
+import tech.skot.view.live.SKMessage
 
 
 class SKVideoViewProxy(
     override val url: String,
     override val useCache: Boolean,
+    override val onFullScreen:((fullScreen:Boolean)->Unit)?,
     playingInitial: Boolean,
-    soundInitial: Boolean
-) : SKComponentViewProxy<PlayerView>(), SKVideoVC {
+    soundInitial: Boolean,
+) : SKComponentViewProxy<StyledPlayerView>(), SKVideoVC {
 
 
     var player: ExoPlayer? = null
@@ -46,7 +48,13 @@ class SKVideoViewProxy(
             repeatMode = Player.REPEAT_MODE_ALL
             addMediaItem(MediaItem.fromUri(url))
             prepare()
+
+
             volume = if (withSound) 1f else 0f
+
+            addListener( object: Player.Listener {
+
+            })
         }
     }
 
@@ -62,8 +70,19 @@ class SKVideoViewProxy(
         set(value) {
             field = value
             updatePlaying()
-
         }
+
+    private val setCurrentPositionMessage = SKMessage<Long>()
+
+    override fun setCurrentPosition(position:Long) {
+        setCurrentPositionMessage.post(position)
+    }
+
+    override val currentPosition:Long?
+        get() = player?.currentPosition
+
+//    override val isPlaying: Boolean
+//        get() = player?.isPlaying ?: false
 
     private var savedPosition: Long = 1
     private var resumed: Boolean = true
@@ -95,14 +114,19 @@ class SKVideoViewProxy(
     override fun bindTo(
         activity: SKActivity,
         fragment: Fragment?,
-        binding: PlayerView
+        binding: StyledPlayerView,
     ): SKVideoView {
         return (player ?: buildPlayer(
             playNow = playing,
             positionMs = savedPosition,
             withSound = sound
         ).also { player = it }).let { thePlayer ->
-            SKVideoView(this, activity, fragment, binding, thePlayer)
+            SKVideoView(this, activity, fragment, binding, thePlayer).apply {
+                setOnFullScreen(onFullScreen)
+                setCurrentPositionMessage.observe {
+                    setCurrentPosition(it)
+                }
+            }
         }
     }
 }
