@@ -1,6 +1,6 @@
 object Versions {
     const val group = "tech.skot.libraries.sk-video"
-    const val library = "0.2.0"
+    const val library = "0.2.1"
     const val frameworkGroup = "tech.skot"
-    const val framework = "1.1.81"
+    const val framework = "1.2.0"
 }

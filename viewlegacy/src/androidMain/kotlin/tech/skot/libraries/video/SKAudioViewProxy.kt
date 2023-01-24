@@ -10,11 +10,12 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import kotlinx.coroutines.*
+import tech.skot.core.SKLog
 import tech.skot.core.di.get
 
 var skAudioViewProxy: SKAudioViewProxy? = null
 
-class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
+class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
 
     override var progressRefreshInterval: Long = 1000L
 
@@ -42,10 +43,16 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
 
     private fun ExoPlayer.currentDuration() = player.duration.let { if (it > 0) it else null }
 
-    var _player: ExoPlayer? = buildPlayer(applicationContext)
+    var _player: ExoPlayer? = null//buildPlayer(applicationContext)
 
     val player: ExoPlayer
-        get() = _player ?: throw IllegalStateException("Player released")
+        get() {
+            SKLog.d("@-------------- SKAudioViewProxy player  $_player")
+            return _player ?: buildPlayer(applicationContext).also {
+                SKLog.d("--- rebuilded")
+                _player = it
+            }
+        }
 
     fun renewIfNeeded(applicationContext: Context) {
         if (_player == null) {
@@ -225,9 +232,13 @@ class SKAudioViewProxy(applicationContext: Context) : SKAudioVC {
     private var savedPosition: Long = 0
     private var saveDuration: Long = 0
     override fun release() {
+        SKLog.d("@-------release  0")
         savedPosition = _player?.currentPosition ?: 0L
-        saveDuration = player.contentDuration
+        SKLog.d("@-------release  1")
+        saveDuration = _player?.contentDuration ?: 0L
+        SKLog.d("@-------release  2")
         _player?.release()
+        SKLog.d("@-------release  3")
         _player = null
     }
 

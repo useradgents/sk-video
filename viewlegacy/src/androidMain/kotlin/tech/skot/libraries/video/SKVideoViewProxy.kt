@@ -108,6 +108,7 @@ class SKVideoViewProxy(
     override fun onRemove() {
         super.onRemove()
         player?.release()
+
     }
 
 

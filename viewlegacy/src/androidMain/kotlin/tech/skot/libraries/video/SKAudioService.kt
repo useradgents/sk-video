@@ -6,17 +6,14 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import kotlinx.coroutines.*
+import tech.skot.core.SKLog
 import tech.skot.core.components.SKActivity
 
 open class SKAudioService : Service() {
-
-    companion object {
-        const val ACTION_FOREGROUND = "tech.skot.libraries.video.foreground"
-        const val ACTION_BACKGROUND = "tech.skot.libraries.video.background"
-
-
-    }
 
     private val CHANNEL_ID = "${this::class.simpleName}_sk-video"
 
@@ -25,7 +22,9 @@ open class SKAudioService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+//        SKLog.d("@------------- SKAudioService  onCreate !!!")
         skAudioViewProxy.let {
+//            SKLog.d("@------------- SKAudioService  onCreate !!!  skAudioViewProxy $it")
             if (it == null) {
                 skAudioViewProxy = SKAudioViewProxy(applicationContext)
             } else {
@@ -33,21 +32,35 @@ open class SKAudioService : Service() {
             }
         }
 
+//        SKLog.d("@------------- SKAudioService  onCreate !!!  skAudioViewProxy $skAudioViewProxy")
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(
+            object : DefaultLifecycleObserver {
+
+                override fun onResume(owner: LifecycleOwner) {
+
+                    updateNotificationJob?.cancel()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        stopForeground(STOP_FOREGROUND_REMOVE)
+                    } else {
+                        stopForeground(true)
+                    }
+                }
+
+                override fun onStop(owner: LifecycleOwner) {
+                    super.onStop(owner)
+                    showNotification()
+                }
+
+            }
+        )
+
     }
 
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.action) {
-            ACTION_BACKGROUND -> {
-                showNotification()
-            }
-            ACTION_FOREGROUND -> {
-                updateNotificationJob?.cancel()
-                stopForeground(true)
-            }
-        }
-        return START_STICKY
-    }
+//    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+//        return START_STICKY
+//    }
 
 
     private fun createChannel(): String {
@@ -93,8 +106,11 @@ open class SKAudioService : Service() {
 
         return if (skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed != null || playingTrack != null) {
             NotificationCompat.Builder(this, createChannel()).apply {
-                setContentTitle(playingTrack?.title
-                    ?: skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed ?: "---")
+                setContentTitle(
+                    playingTrack?.title
+                        ?: skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed
+                        ?: "---"
+                )
                 setOngoing(true)
                 setWhen(0)
                 setContentIntent(pendingIntent())
@@ -135,6 +151,7 @@ open class SKAudioService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+//        SKLog.d("@------------- SKAudioService  onDestroy !!! skAudioViewProxy $skAudioViewProxy")
         serviceJob.cancel()
         skAudioViewProxy?.release()
 

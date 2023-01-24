@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
     api("com.google.android.exoplayer:exoplayer:2.18.2")
-    implementation("androidx.lifecycle:lifecycle-process:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.5.1")
 }
 
 
