@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.util.EventLogger
 import tech.skot.core.components.SKActivity
 import tech.skot.core.components.SKComponentViewProxy
 import tech.skot.core.di.get
@@ -20,9 +21,9 @@ import tech.skot.view.live.SKMessage
 
 
 class SKVideoViewProxy(
-    urlInitial: String?,
+    videoInitial: SKVideoVC.VideoItem?,
     override val useCache: Boolean,
-    override val onFullScreen:((fullScreen:Boolean)->Unit)?,
+    override val onFullScreen: ((fullScreen: Boolean) -> Unit)?,
     playingInitial: Boolean,
     soundInitial: Boolean,
 ) : SKComponentViewProxy<StyledPlayerView>(), SKVideoVC {
@@ -43,12 +44,19 @@ class SKVideoViewProxy(
             builder.setMediaSourceFactory(DefaultMediaSourceFactory(getCacheDataSourceFactory()))
         }
         return builder.build().apply {
+            this.addAnalyticsListener(EventLogger())
+
             seekTo(currentMediaItemIndex, positionMs)
             playWhenReady = playNow
             repeatMode = Player.REPEAT_MODE_ALL
-            url?.let {  addMediaItem(MediaItem.fromUri(it))}
-            prepare()
             volume = if (withSound) 1f else 0f
+
+            video?.let { video ->
+                val mediaBuilder = MediaItem.Builder().setUri(video.url)
+                video.mimeType?.let { mediaBuilder.setMimeType(it) }
+                this.addMediaItem(mediaBuilder.build())
+            }
+            prepare()
 
         }
     }
@@ -67,7 +75,7 @@ class SKVideoViewProxy(
             updatePlaying()
         }
 
-    override var url: String? = urlInitial
+    override var video: SKVideoVC.VideoItem? = videoInitial
         set(value) {
             field = value
             updatePlayerUrl()
@@ -75,11 +83,11 @@ class SKVideoViewProxy(
 
     private val setCurrentPositionMessage = SKMessage<Long>()
 
-    override fun setCurrentPosition(position:Long) {
+    override fun setCurrentPosition(position: Long) {
         setCurrentPositionMessage.post(position)
     }
 
-    override val currentPosition:Long?
+    override val currentPosition: Long?
         get() = player?.currentPosition
 
 //    override val isPlaying: Boolean
@@ -106,11 +114,15 @@ class SKVideoViewProxy(
         }
     }
 
-    fun updatePlayerUrl(){
+    fun updatePlayerUrl() {
         player?.let {
             it.stop()
             it.clearMediaItems()
-            url?.let { url ->  it.addMediaItem(MediaItem.fromUri(url)) }
+            video?.let { video ->
+                val builder = MediaItem.Builder().setUri(video.url)
+                video.mimeType?.let { builder.setMimeType(it) }
+                it.addMediaItem(builder.build())
+            }
             it.prepare()
             it.play()
         }

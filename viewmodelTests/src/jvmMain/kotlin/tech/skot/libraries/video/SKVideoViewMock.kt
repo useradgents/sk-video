@@ -3,7 +3,7 @@ package tech.skot.libraries.video
 import tech.skot.core.components.SKComponentViewMock
 
 class SKVideoViewMock(
-    urlInitial: String?,
+    videoInitial: SKVideoVC.VideoItem?,
     override val useCache: Boolean,
     override val onFullScreen:((fullScreen:Boolean)->Unit)?,
     playingInitial: Boolean,
@@ -11,7 +11,7 @@ class SKVideoViewMock(
 ) : SKComponentViewMock(), SKVideoVC {
     override var playing: Boolean = playingInitial
     override var sound: Boolean = soundInitial
-    override var url: String? = urlInitial
+    override var video: SKVideoVC.VideoItem? = videoInitial
 
 
     override fun setCurrentPosition(position: Long) {

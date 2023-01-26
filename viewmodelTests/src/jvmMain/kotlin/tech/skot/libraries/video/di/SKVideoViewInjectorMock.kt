@@ -3,17 +3,18 @@ package tech.skot.libraries.video.di
 import tech.skot.core.di.InjectorMock
 import tech.skot.core.di.module
 import tech.skot.libraries.video.SKAudioViewMock
+import tech.skot.libraries.video.SKVideoVC
 import tech.skot.libraries.video.SKVideoViewMock
 
 class SKVideoViewInjectorMock : SKVideoViewInjector {
     override fun skVideo(
-        url: String?,
+        video: SKVideoVC.VideoItem?,
         useCache: Boolean,
         playingInitial: Boolean,
         soundInitial: Boolean,
         onFullScreen: ((fullScreen:Boolean)->Unit)?
     ) =
-        SKVideoViewMock(url, useCache, onFullScreen, playingInitial, soundInitial)
+        SKVideoViewMock(video, useCache, onFullScreen, playingInitial, soundInitial)
 
     override fun skAudio() = SKAudioViewMock()
 }

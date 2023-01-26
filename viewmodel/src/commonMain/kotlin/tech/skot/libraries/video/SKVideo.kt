@@ -16,7 +16,7 @@ import tech.skot.libraries.video.di.skvideoViewInjector
  *
  */
 class SKVideo(
-    urlInitial: String?,
+    videoInitial: SKVideoVC.VideoItem?,
     useCache: Boolean = false,
     playingInitial: Boolean = true,
     soundInitial: Boolean = false,
@@ -24,19 +24,34 @@ class SKVideo(
 ) :
     SKComponent<SKVideoVC>() {
 
+    constructor(
+        urlInitial: String?,
+        useCache: Boolean = false,
+        playingInitial: Boolean = true,
+        soundInitial: Boolean = false,
+        onFullScreen: ((fullScreen: Boolean) -> Unit)? = null,
+    ) : this(
+        videoInitial = urlInitial?.let { SKVideoVC.VideoItem(it) },
+        useCache = useCache,
+        playingInitial = playingInitial,
+        soundInitial = soundInitial,
+        onFullScreen = onFullScreen
+
+    )
+
 
     override val view: SKVideoVC = skvideoViewInjector.skVideo(
-        url = urlInitial,
+        video = videoInitial,
         useCache = useCache,
         onFullScreen = onFullScreen,
         playingInitial = playingInitial,
         soundInitial = soundInitial,
     )
 
-    var url: String? = urlInitial
+    var video: SKVideoVC.VideoItem? = videoInitial
         set(value) {
             field = value
-            view.url = value
+            view.video = value
         }
 
     var playing: Boolean = playingInitial

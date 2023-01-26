@@ -6,7 +6,7 @@ import tech.skot.libraries.video.SKVideoVC
 
 interface SKVideoViewInjector {
     fun skVideo(
-        url: String?,
+        video: SKVideoVC.VideoItem?,
         useCache: Boolean,
         playingInitial: Boolean,
         soundInitial: Boolean,

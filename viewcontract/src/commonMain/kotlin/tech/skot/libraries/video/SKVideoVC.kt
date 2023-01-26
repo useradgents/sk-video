@@ -22,7 +22,7 @@ import tech.skot.core.components.SKLayoutIsSimpleView
  */
 @SKLayoutIsSimpleView
 interface SKVideoVC : SKComponentVC {
-    var url: String?
+    var video: VideoItem?
     val useCache: Boolean
     var playing: Boolean
     var sound: Boolean
@@ -42,4 +42,15 @@ interface SKVideoVC : SKComponentVC {
      * méthode à appeler sur le onResume de l'écran contenant
      */
     fun onResume()
+
+    data class VideoItem(
+        val url : String,
+        val mimeType : String? = null
+    ){
+
+        companion object {
+            const val MimeType_DASH =  "application/dash+xml"
+            const val MimeType_HLS =  "application/x-mpegURL"
+        }
+    }
 }
