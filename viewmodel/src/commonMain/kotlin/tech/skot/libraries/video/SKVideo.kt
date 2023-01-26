@@ -16,7 +16,7 @@ import tech.skot.libraries.video.di.skvideoViewInjector
  *
  */
 class SKVideo(
-    url: String,
+    urlInitial: String?,
     useCache: Boolean = false,
     playingInitial: Boolean = true,
     soundInitial: Boolean = false,
@@ -24,13 +24,20 @@ class SKVideo(
 ) :
     SKComponent<SKVideoVC>() {
 
+
     override val view: SKVideoVC = skvideoViewInjector.skVideo(
-        url = url,
+        url = urlInitial,
         useCache = useCache,
         onFullScreen = onFullScreen,
         playingInitial = playingInitial,
         soundInitial = soundInitial,
     )
+
+    var url: String? = urlInitial
+        set(value) {
+            field = value
+            view.url = value
+        }
 
     var playing: Boolean = playingInitial
         set(value) {
@@ -56,7 +63,7 @@ class SKVideo(
         view.setCurrentPosition(position)
     }
 
-    val currentPosition:Long?
+    val currentPosition: Long?
         get() = view.currentPosition
 
 }

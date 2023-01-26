@@ -7,7 +7,7 @@ import tech.skot.libraries.video.SKVideoViewMock
 
 class SKVideoViewInjectorMock : SKVideoViewInjector {
     override fun skVideo(
-        url: String,
+        url: String?,
         useCache: Boolean,
         playingInitial: Boolean,
         soundInitial: Boolean,

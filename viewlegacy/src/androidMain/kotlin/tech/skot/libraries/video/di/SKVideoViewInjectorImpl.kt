@@ -8,7 +8,7 @@ import tech.skot.libraries.video.skAudioViewProxy
 
 class SKVideoViewInjectorImpl : SKVideoViewInjector {
     override fun skVideo(
-        url: String,
+        url: String?,
         useCache: Boolean,
         playingInitial: Boolean,
         soundInitial: Boolean,

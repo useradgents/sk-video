@@ -20,7 +20,7 @@ import tech.skot.view.live.SKMessage
 
 
 class SKVideoViewProxy(
-    override val url: String,
+    urlInitial: String?,
     override val useCache: Boolean,
     override val onFullScreen:((fullScreen:Boolean)->Unit)?,
     playingInitial: Boolean,
@@ -46,15 +46,10 @@ class SKVideoViewProxy(
             seekTo(currentMediaItemIndex, positionMs)
             playWhenReady = playNow
             repeatMode = Player.REPEAT_MODE_ALL
-            addMediaItem(MediaItem.fromUri(url))
+            url?.let {  addMediaItem(MediaItem.fromUri(it))}
             prepare()
-
-
             volume = if (withSound) 1f else 0f
 
-            addListener( object: Player.Listener {
-
-            })
         }
     }
 
@@ -70,6 +65,12 @@ class SKVideoViewProxy(
         set(value) {
             field = value
             updatePlaying()
+        }
+
+    override var url: String? = urlInitial
+        set(value) {
+            field = value
+            updatePlayerUrl()
         }
 
     private val setCurrentPositionMessage = SKMessage<Long>()
@@ -103,6 +104,17 @@ class SKVideoViewProxy(
         } else {
             player?.pause()
         }
+    }
+
+    fun updatePlayerUrl(){
+        player?.let {
+            it.stop()
+            it.clearMediaItems()
+            url?.let { url ->  it.addMediaItem(MediaItem.fromUri(url)) }
+            it.prepare()
+            it.play()
+        }
+
     }
 
     override fun onRemove() {

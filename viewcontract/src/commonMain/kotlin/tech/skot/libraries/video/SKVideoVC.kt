@@ -22,7 +22,7 @@ import tech.skot.core.components.SKLayoutIsSimpleView
  */
 @SKLayoutIsSimpleView
 interface SKVideoVC : SKComponentVC {
-    val url: String
+    var url: String?
     val useCache: Boolean
     var playing: Boolean
     var sound: Boolean
