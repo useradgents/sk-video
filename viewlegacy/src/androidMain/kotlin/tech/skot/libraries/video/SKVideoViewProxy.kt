@@ -18,6 +18,7 @@ import tech.skot.core.components.SKActivity
 import tech.skot.core.components.SKComponentViewProxy
 import tech.skot.core.di.get
 import tech.skot.view.live.SKMessage
+import java.io.File
 
 
 class SKVideoViewProxy(
@@ -166,7 +167,13 @@ object Cache {
         return cache ?: kotlin.run {
             val cacheEvictor = LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024)
             val exoplayerDatabaseProvider = StandaloneDatabaseProvider(context)
-            SimpleCache(context.cacheDir, cacheEvictor, exoplayerDatabaseProvider).apply {
+            val cacheDir = File(context.cacheDir,"skvideoCache").apply {
+                if (!this.exists() || !this.isDirectory ){
+                    this.delete()
+                    this.mkdirs()
+                }
+            }
+            SimpleCache(cacheDir, cacheEvictor, exoplayerDatabaseProvider).apply {
                 cache = this
             }
         }
