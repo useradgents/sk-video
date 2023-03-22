@@ -25,6 +25,7 @@ class SKVideoViewProxy(
     videoInitial: SKVideoVC.VideoItem?,
     override val useCache: Boolean,
     override val onFullScreen: ((fullScreen: Boolean) -> Unit)?,
+    override val onControllerVisibility: ((visible: Boolean) -> Unit)?,
     playingInitial: Boolean,
     soundInitial: Boolean,
 ) : SKComponentViewProxy<StyledPlayerView>(), SKVideoVC {
@@ -149,6 +150,7 @@ class SKVideoViewProxy(
         ).also { player = it }).let { thePlayer ->
             SKVideoView(this, activity, fragment, binding, thePlayer).apply {
                 setOnFullScreen(onFullScreen)
+                setOnControllerVisibility(onControllerVisibility)
                 setCurrentPositionMessage.observe {
                     setCurrentPosition(it)
                 }

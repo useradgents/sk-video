@@ -6,6 +6,7 @@ class SKVideoViewMock(
     videoInitial: SKVideoVC.VideoItem?,
     override val useCache: Boolean,
     override val onFullScreen:((fullScreen:Boolean)->Unit)?,
+    override val onControllerVisibility: ((visible: Boolean) -> Unit)?,
     playingInitial: Boolean,
     soundInitial: Boolean
 ) : SKComponentViewMock(), SKVideoVC {

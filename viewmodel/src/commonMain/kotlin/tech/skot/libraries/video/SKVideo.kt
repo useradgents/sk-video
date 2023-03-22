@@ -21,6 +21,7 @@ class SKVideo(
     playingInitial: Boolean = true,
     soundInitial: Boolean = false,
     onFullScreen: ((fullScreen: Boolean) -> Unit)? = null,
+    onControllerVisibility: ((visible: Boolean) -> Unit)? = null,
 ) :
     SKComponent<SKVideoVC>() {
 
@@ -30,13 +31,14 @@ class SKVideo(
         playingInitial: Boolean = true,
         soundInitial: Boolean = false,
         onFullScreen: ((fullScreen: Boolean) -> Unit)? = null,
+        onControllerVisibility: ((visible: Boolean) -> Unit)? = null,
     ) : this(
         videoInitial = urlInitial?.let { SKVideoVC.VideoItem(it) },
         useCache = useCache,
         playingInitial = playingInitial,
         soundInitial = soundInitial,
-        onFullScreen = onFullScreen
-
+        onFullScreen = onFullScreen,
+        onControllerVisibility = onControllerVisibility
     )
 
 
@@ -44,6 +46,7 @@ class SKVideo(
         video = videoInitial,
         useCache = useCache,
         onFullScreen = onFullScreen,
+        onControllerVisibility = onControllerVisibility,
         playingInitial = playingInitial,
         soundInitial = soundInitial,
     )
@@ -52,6 +55,12 @@ class SKVideo(
         set(value) {
             field = value
             view.video = value
+        }
+
+    var url: String?
+        get() = video?.url
+        set(value) {
+            video = value?.let { SKVideoVC.VideoItem(it) }
         }
 
     var playing: Boolean = playingInitial

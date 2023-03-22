@@ -28,6 +28,7 @@ interface SKVideoVC : SKComponentVC {
     var sound: Boolean
 
     val onFullScreen: ((fullScreen: Boolean) -> Unit)?
+    val onControllerVisibility: ((visible: Boolean) -> Unit)?
 
     val currentPosition: Long?
 
