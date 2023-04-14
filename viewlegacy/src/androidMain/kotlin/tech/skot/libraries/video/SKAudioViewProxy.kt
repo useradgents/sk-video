@@ -8,6 +8,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import kotlinx.coroutines.*
@@ -77,15 +78,15 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
         }
     }
 
-    private fun getCacheDataSourceFactory(): DataSource.Factory {
+    private fun getCacheDataSourceFactory(applicationContext: Context): DataSource.Factory {
         return CacheDataSource.Factory()
             .setCache(Cache.getCache(get()))
-            .setUpstreamDataSourceFactory(DefaultHttpDataSource.Factory())
+            .setUpstreamDataSourceFactory(DefaultDataSource.Factory(applicationContext))
     }
 
     private fun buildPlayer(applicationContext: Context): ExoPlayer =
         ExoPlayer.Builder(applicationContext)
-            .setMediaSourceFactory(DefaultMediaSourceFactory(getCacheDataSourceFactory()))
+            .setMediaSourceFactory(DefaultMediaSourceFactory(getCacheDataSourceFactory(applicationContext)))
             .build()
             .apply {
                 addListener(object : Player.Listener {
