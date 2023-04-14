@@ -1,6 +1,7 @@
 package tech.skot.libraries.video
 
 import android.content.Context
+import android.net.Uri
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -12,6 +13,7 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import kotlinx.coroutines.*
 import tech.skot.core.SKLog
 import tech.skot.core.di.get
+import java.io.File
 
 var skAudioViewProxy: SKAudioViewProxy? = null
 
@@ -194,9 +196,14 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
         player.pause()
     }
 
-    private fun SKAudioVC.Track.toMediaItem() = MediaItem.Builder()
-        .setUri(url)
-        .build()
+    private fun SKAudioVC.Track.toMediaItem() = when(this){
+        is SKAudioVC.Track.DistantTrack -> MediaItem.Builder()
+            .setUri(uri)
+            .build()
+        is SKAudioVC.Track.LocalTrack -> MediaItem.Builder()
+            .setUri(Uri.fromFile(File(uri)))
+            .build()
+    }
 
     override fun setCurrentTrack(track: SKAudioVC.Track) {
         val index = trackList.indexOf(track)

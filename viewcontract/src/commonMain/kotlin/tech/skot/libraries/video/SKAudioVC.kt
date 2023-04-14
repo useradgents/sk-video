@@ -7,7 +7,15 @@ package tech.skot.libraries.video
  */
 interface SKAudioVC {
 
-    data class Track(val title:String, val url:String, val image:String?)
+    sealed class Track(){
+        abstract val uri : String
+        abstract val title:String
+        abstract val image:String?
+        data class DistantTrack(override val title:String, override val uri:String, override val image:String?) : Track()
+        data class LocalTrack(override val title:String, override val uri:String,override val image:String?) : Track()
+    }
+
+
     data class State(val track:Track?, val playing:Boolean, val position:Long?, val duration:Long?)
 
     var playing: Boolean
