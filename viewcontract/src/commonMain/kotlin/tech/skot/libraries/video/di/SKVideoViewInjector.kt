@@ -10,6 +10,7 @@ interface SKVideoViewInjector {
         useCache: Boolean,
         playingInitial: Boolean,
         soundInitial: Boolean,
+        repeatInitial: Boolean,
         onFullScreen:((fullScreen:Boolean)->Unit)?,
         onControllerVisibility: ((visible: Boolean) -> Unit)?
     ): SKVideoVC

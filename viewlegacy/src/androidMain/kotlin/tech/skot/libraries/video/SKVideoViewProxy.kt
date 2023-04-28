@@ -28,6 +28,7 @@ class SKVideoViewProxy(
     override val onControllerVisibility: ((visible: Boolean) -> Unit)?,
     playingInitial: Boolean,
     soundInitial: Boolean,
+    repeatInitial : Boolean,
 ) : SKComponentViewProxy<StyledPlayerView>(), SKVideoVC {
 
 
@@ -50,7 +51,7 @@ class SKVideoViewProxy(
 
             seekTo(currentMediaItemIndex, positionMs)
             playWhenReady = playNow
-            repeatMode = Player.REPEAT_MODE_ALL
+            repeatMode =  if(repeat) Player.REPEAT_MODE_ALL else Player.REPEAT_MODE_OFF
             volume = if (withSound) 1f else 0f
 
             video?.let { video ->
@@ -74,6 +75,13 @@ class SKVideoViewProxy(
     override var playing: Boolean = playingInitial
         set(value) {
             field = value
+            updatePlaying()
+        }
+
+    override var repeat : Boolean = repeatInitial
+        set(value) {
+            field = value
+            player?.repeatMode = if(value) Player.REPEAT_MODE_ALL else Player.REPEAT_MODE_OFF
             updatePlaying()
         }
 
