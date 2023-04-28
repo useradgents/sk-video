@@ -13,9 +13,10 @@ class SKVideoViewInjectorImpl : SKVideoViewInjector {
         useCache: Boolean,
         playingInitial: Boolean,
         soundInitial: Boolean,
+        repeatInitial: Boolean,
         onFullScreen:((fullScreen:Boolean)->Unit)?,
         onControllerVisibility: ((visible: Boolean) -> Unit)?
-    ) = SKVideoViewProxy(videoInitial, useCache, onFullScreen, onControllerVisibility, playingInitial, soundInitial)
+    ) = SKVideoViewProxy(videoInitial, useCache, onFullScreen, onControllerVisibility, playingInitial, soundInitial, repeatInitial)
 
     override fun skAudio(): SKAudioVC? {
         return skAudioViewProxy

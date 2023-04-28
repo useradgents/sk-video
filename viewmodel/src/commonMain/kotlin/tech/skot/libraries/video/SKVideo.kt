@@ -20,6 +20,7 @@ class SKVideo(
     useCache: Boolean = false,
     playingInitial: Boolean = true,
     soundInitial: Boolean = false,
+    repeatInitial: Boolean = true,
     onFullScreen: ((fullScreen: Boolean) -> Unit)? = null,
     onControllerVisibility: ((visible: Boolean) -> Unit)? = null,
 ) :
@@ -30,6 +31,7 @@ class SKVideo(
         useCache: Boolean = false,
         playingInitial: Boolean = true,
         soundInitial: Boolean = false,
+        repeatInitial: Boolean = true,
         onFullScreen: ((fullScreen: Boolean) -> Unit)? = null,
         onControllerVisibility: ((visible: Boolean) -> Unit)? = null,
     ) : this(
@@ -37,6 +39,7 @@ class SKVideo(
         useCache = useCache,
         playingInitial = playingInitial,
         soundInitial = soundInitial,
+        repeatInitial = repeatInitial,
         onFullScreen = onFullScreen,
         onControllerVisibility = onControllerVisibility
     )
@@ -49,6 +52,7 @@ class SKVideo(
         onControllerVisibility = onControllerVisibility,
         playingInitial = playingInitial,
         soundInitial = soundInitial,
+        repeatInitial = repeatInitial
     )
 
     var video: SKVideoVC.VideoItem? = videoInitial

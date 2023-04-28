@@ -26,6 +26,7 @@ interface SKVideoVC : SKComponentVC {
     val useCache: Boolean
     var playing: Boolean
     var sound: Boolean
+    var repeat: Boolean
 
     val onFullScreen: ((fullScreen: Boolean) -> Unit)?
     val onControllerVisibility: ((visible: Boolean) -> Unit)?

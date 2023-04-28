@@ -8,11 +8,13 @@ class SKVideoViewMock(
     override val onFullScreen:((fullScreen:Boolean)->Unit)?,
     override val onControllerVisibility: ((visible: Boolean) -> Unit)?,
     playingInitial: Boolean,
-    soundInitial: Boolean
+    soundInitial: Boolean,
+    repeatInitial: Boolean
 ) : SKComponentViewMock(), SKVideoVC {
     override var playing: Boolean = playingInitial
     override var sound: Boolean = soundInitial
     override var video: SKVideoVC.VideoItem? = videoInitial
+    override var repeat: Boolean = repeatInitial
 
 
     override fun setCurrentPosition(position: Long) {
