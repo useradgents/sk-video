@@ -41,6 +41,10 @@ class SKAudio(private val proxy: SKAudioVC) {
         proxy.seekToLastTrack()
     }
 
+    fun seek(position : Long) {
+        proxy.seekToPosition(position)
+    }
+
     fun setProgressRefreshInterval(ms: Long) {
         proxy.progressRefreshInterval = ms
     }

@@ -87,6 +87,8 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
     private fun buildPlayer(applicationContext: Context): ExoPlayer =
         ExoPlayer.Builder(applicationContext)
             .setMediaSourceFactory(DefaultMediaSourceFactory(getCacheDataSourceFactory(applicationContext)))
+            .setSeekBackIncrementMs(10000)
+            .setSeekForwardIncrementMs(10000)
             .build()
             .apply {
                 addListener(object : Player.Listener {
@@ -248,6 +250,20 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
         _player?.release()
         SKLog.d("@-------release  3")
         _player = null
+    }
+
+    override fun seekToPosition(position: Long) {
+        player.seekTo(position)
+        player.seekBackIncrement
+        player.updateState()
+    }
+
+    override fun seekForward() {
+        player.seekForward()
+    }
+
+    override fun seekBack() {
+        player.seekBack()
     }
 
 }

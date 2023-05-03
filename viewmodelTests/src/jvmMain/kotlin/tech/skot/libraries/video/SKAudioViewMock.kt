@@ -28,4 +28,16 @@ class SKAudioViewMock : SKAudioVC {
     override fun release() {
 
     }
+
+    override fun seekToPosition(position: Long) {
+
+    }
+
+    override fun seekForward() {
+
+    }
+
+    override fun seekBack() {
+
+    }
 }

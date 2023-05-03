@@ -35,5 +35,8 @@ interface SKAudioVC {
     fun setCurrentTrack(track: Track)
 
     fun release()
+    fun seekToPosition(position: Long)
+    fun seekForward()
+    fun seekBack()
 
 }
