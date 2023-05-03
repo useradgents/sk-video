@@ -25,7 +25,11 @@ interface SKAudioVC {
 
     fun addTrack(track:Track)
     fun hasNext():Boolean
+    fun hasPrevious():Boolean
     fun seekToLastTrack()
+
+    fun setNextTrack()
+    fun setPreviousTrack()
 
     var progressRefreshInterval:Long
 
@@ -33,6 +37,7 @@ interface SKAudioVC {
     var onDurations: ((durations: Map<Track, Long>) -> Unit)?
 
     fun setCurrentTrack(track: Track)
+    fun setCurrentTrack(index: Int)
 
     fun release()
     fun seekToPosition(position: Long)

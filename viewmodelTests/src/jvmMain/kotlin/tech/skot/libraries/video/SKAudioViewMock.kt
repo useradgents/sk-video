@@ -13,6 +13,9 @@ class SKAudioViewMock : SKAudioVC {
 
     }
 
+    override fun setCurrentTrack(index: Int) {
+    }
+
     override fun addTrack(track: SKAudioVC.Track) {
     }
 
@@ -21,8 +24,19 @@ class SKAudioViewMock : SKAudioVC {
         return hasNextReturnValue
     }
 
+    var hasPreviousReturnValue:Boolean = false
+    override fun hasPrevious(): Boolean {
+        return hasPreviousReturnValue
+    }
+
     override fun seekToLastTrack() {
 
+    }
+
+    override fun setNextTrack() {
+    }
+
+    override fun setPreviousTrack() {
     }
 
     override fun release() {

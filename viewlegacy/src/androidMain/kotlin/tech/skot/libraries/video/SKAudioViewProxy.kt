@@ -177,11 +177,32 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
     override fun hasNext():Boolean {
         return player.hasNextMediaItem()
     }
+    override fun hasPrevious():Boolean {
+        return player.hasPreviousMediaItem()
+    }
 
     override fun seekToLastTrack() {
         if (hasNext()) {
             player.seekTo(player.mediaItemCount - 1, 0)
             player.updateState()
+        }
+    }
+
+    override fun setNextTrack() {
+        state.track?.let { currentTrack ->
+            val index = _media.indexOf(currentTrack)
+            if(hasNext()){
+                setCurrentTrack(index+1)
+            }
+        }
+    }
+
+    override fun setPreviousTrack() {
+        state.track?.let { currentTrack ->
+            val index = _media.indexOf(currentTrack)
+            if(hasPrevious()){
+                setCurrentTrack(index-1)
+            }
         }
     }
 
@@ -209,7 +230,11 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
     }
 
     override fun setCurrentTrack(track: SKAudioVC.Track) {
-        val index = trackList.indexOf(track)
+        setCurrentTrack(trackList.indexOf(track))
+
+    }
+
+    override fun setCurrentTrack(index: Int) {
         if (index != -1) {
             player.seekTo(index, 0)
             player.updateState()

@@ -19,11 +19,11 @@ class SKAudio(private val proxy: SKAudioVC) {
         proxy.playing = true
     }
 
-    var playing:Boolean
+    var playing: Boolean
         get() = proxy.playing
-    set(value) {
-        proxy.playing = value
-    }
+        set(value) {
+            proxy.playing = value
+        }
 
     fun pause() {
         proxy.playing = false
@@ -33,17 +33,45 @@ class SKAudio(private val proxy: SKAudioVC) {
         proxy.setCurrentTrack(track)
     }
 
+    fun setCurrentTrack(index: Int) {
+        proxy.setCurrentTrack(index)
+    }
+
     fun hasNext(): Boolean {
         return proxy.hasNext()
     }
+
+    fun hasPrevious(): Boolean {
+        return proxy.hasPrevious()
+    }
+
+    fun setNextTrack() {
+        proxy.setNextTrack()
+    }
+
+    fun setPreviousTrack() {
+        proxy.setPreviousTrack()
+    }
+
+
+
 
     fun seekToLastTrack() {
         proxy.seekToLastTrack()
     }
 
-    fun seek(position : Long) {
+    fun seek(position: Long) {
         proxy.seekToPosition(position)
     }
+
+    fun seekForward() {
+        proxy.seekForward()
+    }
+
+    fun seekBack() {
+        proxy.seekBack()
+    }
+
 
     fun setProgressRefreshInterval(ms: Long) {
         proxy.progressRefreshInterval = ms
@@ -62,7 +90,7 @@ class SKAudio(private val proxy: SKAudioVC) {
     private val _state = SKManualData<SKAudioVC.State?>(null)
     val state: SKData<SKAudioVC.State?> = _state
 
-    val currentState:SKAudioVC.State?
+    val currentState: SKAudioVC.State?
         get() = _state.value
 
     private val _durations = SKManualData<Map<SKAudioVC.Track, Long>?>(null)
