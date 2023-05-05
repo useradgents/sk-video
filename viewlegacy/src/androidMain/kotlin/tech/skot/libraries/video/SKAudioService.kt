@@ -20,6 +20,8 @@ open class SKAudioService : Service() {
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
+    open val notificationIcon: Int = android.R.drawable.presence_audio_online
+
     override fun onCreate() {
         super.onCreate()
 //        SKLog.d("@------------- SKAudioService  onCreate !!!")
@@ -38,7 +40,6 @@ open class SKAudioService : Service() {
             object : DefaultLifecycleObserver {
 
                 override fun onResume(owner: LifecycleOwner) {
-
                     updateNotificationJob?.cancel()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         stopForeground(STOP_FOREGROUND_REMOVE)
@@ -63,7 +64,7 @@ open class SKAudioService : Service() {
 //    }
 
 
-    private fun createChannel(): String {
+    open fun createChannel(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val mNotificationManager =
                 this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -82,7 +83,7 @@ open class SKAudioService : Service() {
 
     }
 
-    private fun pendingIntent(): PendingIntent {
+     fun pendingIntent(): PendingIntent {
         val notificationIntent = Intent(this, SKActivity.launchActivityClass)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(
@@ -101,7 +102,7 @@ open class SKAudioService : Service() {
         }
     }
 
-    private fun buildNotification(): Notification? {
+    open fun buildNotification(): Notification? {
         val playingTrack = skAudioViewProxy?.state?.track
 
         return if (skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed != null || playingTrack != null) {
@@ -111,10 +112,12 @@ open class SKAudioService : Service() {
                         ?: skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed
                         ?: "---"
                 )
+                    .setStyle(androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(
+                        skAudioViewProxy?.mediaSession?.sessionToken))
                 setOngoing(true)
                 setWhen(0)
                 setContentIntent(pendingIntent())
-                setSmallIcon(android.R.drawable.presence_audio_online)
+                setSmallIcon(notificationIcon)
                 priority = NotificationCompat.PRIORITY_LOW
             }.build()
         } else {
@@ -125,6 +128,8 @@ open class SKAudioService : Service() {
 
     var updateNotificationJob: Job? = null
 
+    var playing = false
+
     private fun showNotification() {
         updateNotificationJob?.cancel()
         buildNotification()?.let {
@@ -132,15 +137,18 @@ open class SKAudioService : Service() {
             updateNotificationJob = serviceScope.launch {
                 while (true) {
                     delay(1000)
-                    buildNotification().let { notification ->
-                        val notificationManager =
-                            getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
-                        if (notification == null) {
-                            notificationManager?.cancel(1)
-                            updateNotificationJob?.cancel()
-                            this@SKAudioService.stopSelf()
-                        } else {
-                            notificationManager?.notify(1, notification)
+                    if (playing || skAudioViewProxy?.playing != false) {
+                        playing = skAudioViewProxy?.playing?: false
+                        buildNotification().let { notification ->
+                            val notificationManager =
+                                getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+                            if (notification == null) {
+                                notificationManager?.cancel(1)
+                                updateNotificationJob?.cancel()
+                                this@SKAudioService.stopSelf()
+                            } else {
+                                notificationManager?.notify(1, notification)
+                            }
                         }
                     }
                 }

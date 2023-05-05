@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     api("com.google.android.exoplayer:exoplayer:2.18.6")
+    api("com.google.android.exoplayer:extension-mediasession:2.18.6")
     implementation("androidx.lifecycle:lifecycle-process:2.6.1")
 }
 
