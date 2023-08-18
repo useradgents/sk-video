@@ -5,6 +5,14 @@ import tech.skot.model.SKManualData
 
 class SKAudio(private val proxy: SKAudioVC) {
 
+    var sound: Boolean = true
+        set(value) {
+            field = value
+            proxy.sound = value
+        }
+        get() = proxy.sound
+
+
     fun setPlayList(tracks: List<SKAudioVC.Track>) {
         proxy.trackList = tracks
     }

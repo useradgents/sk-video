@@ -4,6 +4,7 @@ class SKAudioViewMock : SKAudioVC {
 
     override var playing: Boolean = false
     override var trackList: List<SKAudioVC.Track> = emptyList()
+    override var sound: Boolean = true
     override var onState: ((state: SKAudioVC.State) -> Unit)? = null
     override var onDurations: ((durations: Map<SKAudioVC.Track, Long>) -> Unit)? = null
     override var keepActiveInBackGroundWithMessageIfNothingPlayed: String? = null

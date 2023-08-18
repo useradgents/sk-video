@@ -23,6 +23,7 @@ interface SKAudioVC {
 
     var playing: Boolean
     var trackList: List<Track>
+    var sound: Boolean
 
     var keepActiveInBackGroundWithMessageIfNothingPlayed: String?
 

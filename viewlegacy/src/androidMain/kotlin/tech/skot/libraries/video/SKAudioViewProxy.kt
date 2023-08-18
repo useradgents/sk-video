@@ -203,6 +203,13 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
 
         }
 
+    override var sound: Boolean = player.volume == 1f
+        get() = player.volume == 1f
+        set(value) {
+            field = value
+            player.volume = if (value) 1f else 0f
+        }
+
 
     private var _media: List<SKAudioVC.Track> = emptyList()
     override var trackList: List<SKAudioVC.Track>
@@ -218,6 +225,7 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
             _playing = false
             player.updateState()
         }
+
 
     override fun addTrack(track: SKAudioVC.Track) {
         if (trackList.isEmpty()) {

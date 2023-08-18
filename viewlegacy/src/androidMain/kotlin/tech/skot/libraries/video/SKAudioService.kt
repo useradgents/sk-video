@@ -39,6 +39,7 @@ open class SKAudioService : Service() {
         ProcessLifecycleOwner.get().lifecycle.addObserver(
             object : DefaultLifecycleObserver {
 
+                @Suppress("DEPRECATION")
                 override fun onResume(owner: LifecycleOwner) {
                     updateNotificationJob?.cancel()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
