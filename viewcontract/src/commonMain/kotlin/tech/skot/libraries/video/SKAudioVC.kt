@@ -10,7 +10,8 @@ interface SKAudioVC {
     data class Track(
         val uri: () -> String,
         val title: String,
-        val image: String?,
+        val image: String? = null,
+        val trackingName : String? = null
     )
 
 
