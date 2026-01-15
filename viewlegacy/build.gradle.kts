@@ -6,19 +6,15 @@ plugins {
 
 android {
     namespace = "tech.skot.libraries.skvideo.viewlegacy"
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+}
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {
-    api("com.google.android.exoplayer:exoplayer:2.18.6")
-    api("com.google.android.exoplayer:extension-mediasession:2.18.6")
-    implementation("androidx.lifecycle:lifecycle-process:2.6.1")
+    api("com.google.android.exoplayer:exoplayer:2.19.1")
+    api("com.google.android.exoplayer:extension-mediasession:2.19.1")
+    implementation("androidx.lifecycle:lifecycle-process:2.10.0")
 }
 
 

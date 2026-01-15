@@ -1,5 +1,4 @@
 plugins {
-    id("java-library")
     kotlin("multiplatform")
     signing
 }
@@ -72,7 +71,3 @@ if (!localPublication) {
         this.sign(publishing.publications)
     }
 }
-
-
-
-

@@ -60,7 +60,6 @@ class SKVideoViewProxy(
                 this.addMediaItem(mediaBuilder.build())
             }
             prepare()
-
         }
     }
 

@@ -3,6 +3,7 @@ package tech.skot.libraries.video
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
@@ -134,7 +135,11 @@ open class SKAudioService : Service() {
     private fun showNotification() {
         updateNotificationJob?.cancel()
         buildNotification()?.let {
-            startForeground(1, it)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(1, it,ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
+            }else {
+                startForeground(1, it)
+            }
             updateNotificationJob = serviceScope.launch {
                 while (true) {
                     delay(1000)
@@ -160,7 +165,6 @@ open class SKAudioService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        SKLog.d("@------------- SKAudioService  onDestroy !!! skAudioViewProxy $skAudioViewProxy")
         serviceJob.cancel()
         skAudioViewProxy?.release()
 
