@@ -12,8 +12,10 @@ kotlin {
 }
 
 dependencies {
-    api("com.google.android.exoplayer:exoplayer:2.19.1")
-    api("com.google.android.exoplayer:extension-mediasession:2.19.1")
+    api("androidx.media3:media3-exoplayer:1.9.2")
+    api("androidx.media3:media3-ui:1.9.2")
+    api("androidx.media3:media3-session:1.9.2")
+    implementation("androidx.media:media:1.7.0")
     implementation("androidx.lifecycle:lifecycle-process:2.10.0")
 }
 

@@ -2,18 +2,19 @@ package tech.skot.libraries.video
 
 import android.content.Context
 import androidx.fragment.app.Fragment
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.google.android.exoplayer2.util.EventLogger
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.database.StandaloneDatabaseProvider
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
+import androidx.media3.datasource.cache.SimpleCache
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.util.EventLogger
+import androidx.media3.ui.PlayerView
 import tech.skot.core.components.SKActivity
 import tech.skot.core.components.SKComponentViewProxy
 import tech.skot.core.di.get
@@ -21,6 +22,7 @@ import tech.skot.view.live.SKMessage
 import java.io.File
 
 
+@UnstableApi
 class SKVideoViewProxy(
     videoInitial: SKVideoVC.VideoItem?,
     override val useCache: Boolean,
@@ -29,7 +31,7 @@ class SKVideoViewProxy(
     playingInitial: Boolean,
     soundInitial: Boolean,
     repeatInitial : Boolean,
-) : SKComponentViewProxy<StyledPlayerView>(), SKVideoVC {
+) : SKComponentViewProxy<PlayerView>(), SKVideoVC {
 
 
     var player: ExoPlayer? = null
@@ -148,7 +150,7 @@ class SKVideoViewProxy(
     override fun bindTo(
         activity: SKActivity,
         fragment: Fragment?,
-        binding: StyledPlayerView,
+        binding: PlayerView,
     ): SKVideoView {
         return (player ?: buildPlayer(
             playNow = playing,
@@ -170,6 +172,7 @@ class SKVideoViewProxy(
 /**
  * singleton for cache because only one [SimpleCache] is allowed by directory
  */
+@UnstableApi
 object Cache {
     private var cache: SimpleCache? = null
     fun getCache(context: Context): SimpleCache {

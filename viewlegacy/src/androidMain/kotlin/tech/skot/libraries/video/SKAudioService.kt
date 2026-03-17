@@ -10,10 +10,12 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.media3.common.util.UnstableApi
 import kotlinx.coroutines.*
 import tech.skot.core.SKLog
 import tech.skot.core.components.SKActivity
 
+@UnstableApi
 open class SKAudioService : Service() {
 
     private val CHANNEL_ID = "${this::class.simpleName}_sk-video"
@@ -114,8 +116,7 @@ open class SKAudioService : Service() {
                         ?: skAudioViewProxy?.keepActiveInBackGroundWithMessageIfNothingPlayed
                         ?: "---"
                 )
-                    .setStyle(androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(
-                        skAudioViewProxy?.mediaSession?.sessionToken))
+                    .setStyle(androidx.media.app.NotificationCompat.MediaStyle())
                 setOngoing(true)
                 setWhen(0)
                 setContentIntent(pendingIntent())

@@ -2,29 +2,29 @@ package tech.skot.libraries.video
 
 import android.content.Context
 import android.net.Uri
-import android.support.v4.media.MediaDescriptionCompat
-import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.Player
+import androidx.media3.common.Timeline
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.session.MediaSession
 import kotlinx.coroutines.*
 import tech.skot.core.SKLog
 import tech.skot.core.di.get
 import java.io.File
 
+@UnstableApi
 var skAudioViewProxy: SKAudioViewProxy? = null
 
+@UnstableApi
 class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
 
-    var mediaSession: MediaSessionCompat? = null
+    var mediaSession: MediaSession? = null
     override var progressRefreshInterval: Long = 1000L
 
     private val mapMediaItemTrack: MutableMap<MediaItem, SKAudioVC.Track> = mutableMapOf()
@@ -106,46 +106,7 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
                 mediaSession?.release()
                 mediaSession = null
 
-                val session = MediaSessionCompat(applicationContext, applicationContext.packageName)
-                session.setCallback(object : MediaSessionCompat.Callback() {
-                    override fun onSkipToNext() {
-                        super.onSkipToNext()
-                        skAudioViewProxy?.setNextTrack()
-                    }
-
-                    override fun onSkipToPrevious() {
-                        super.onSkipToPrevious()
-                        skAudioViewProxy?.setPreviousTrack()
-                    }
-
-
-                })
-                mediaSession = session
-
-                val mediaSessionConnector = MediaSessionConnector(session)
-                mediaSessionConnector.setPlayer(this)
-                mediaSessionConnector.setQueueNavigator(object : TimelineQueueNavigator(session) {
-                    @Override
-                    override fun getMediaDescription(
-                        player: Player,
-                        windowIndex: Int
-                    ): MediaDescriptionCompat {
-                        return MediaDescriptionCompat.Builder().apply {
-                            setTitle("${trackList.get(windowIndex).title}")
-                            setDescription("MediaDescription ${trackList.get(windowIndex).title}")
-                            setSubtitle("subtitle${trackList.get(windowIndex).title}")
-                        }.build()
-                    }
-                });
-                mediaSessionConnector.setEnabledPlaybackActions(
-                    PlaybackStateCompat.ACTION_PLAY_PAUSE
-                            or PlaybackStateCompat.ACTION_PLAY
-                            or PlaybackStateCompat.ACTION_PAUSE
-                            or PlaybackStateCompat.ACTION_SEEK_TO
-                            or PlaybackStateCompat.ACTION_FAST_FORWARD
-                            or PlaybackStateCompat.ACTION_REWIND
-                            or PlaybackStateCompat.ACTION_STOP
-                )
+                mediaSession = MediaSession.Builder(applicationContext, this).build()
 
                 addListener(object : Player.Listener {
                     override fun onTimelineChanged(timeline: Timeline, reason: Int) {
@@ -196,7 +157,6 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
             _playing = value
             if (value) {
                 player.play()
-                mediaSession?.isActive = true
             } else {
                 player.pause()
             }
@@ -219,7 +179,6 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
             player.clearMediaItems()
             mapMediaItemTrack.clear()
             setMediaListToPlayer(value)
-            mediaSession?.isActive = value.isNotEmpty()
             player.pause()
             player.seekTo(0, 0)
             _playing = false
@@ -285,20 +244,22 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
         )
         player.prepare()
         player.pause()
-        mediaSession?.isActive = true
-
-
     }
 
     private fun SKAudioVC.Track.toMediaItem(): MediaItem {
         val uri = uri()
+        val metadata = MediaMetadata.Builder()
+            .setTitle(title)
+            .build()
         return if (uri.startsWith("/")) { //local file
             MediaItem.Builder()
                 .setUri(Uri.fromFile(File(uri)))
+                .setMediaMetadata(metadata)
                 .build()
         } else {//distant file
             MediaItem.Builder()
                 .setUri(uri)
+                .setMediaMetadata(metadata)
                 .build()
         }
     }
@@ -350,7 +311,6 @@ class SKAudioViewProxy(private val applicationContext: Context) : SKAudioVC {
         _player?.release()
         SKLog.d("@-------release  3")
         _player = null
-        mediaSession?.isActive = false
         mediaSession?.release()
         mediaSession = null
     }

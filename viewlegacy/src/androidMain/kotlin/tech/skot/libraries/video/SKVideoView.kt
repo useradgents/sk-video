@@ -4,20 +4,21 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.ui.StyledPlayerView.ControllerVisibilityListener
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
+import androidx.media3.ui.PlayerView.ControllerVisibilityListener
 import tech.skot.core.components.SKActivity
 import tech.skot.core.components.SKComponentView
-import java.util.ResourceBundle.Control
 
+@UnstableApi
 class SKVideoView(
     override val proxy: SKVideoViewProxy,
     activity: SKActivity,
     fragment: Fragment?,
-    binding: StyledPlayerView,
+    binding: PlayerView,
     player: ExoPlayer,
-) : SKComponentView<StyledPlayerView>(proxy, activity, fragment, binding) {
+) : SKComponentView<PlayerView>(proxy, activity, fragment, binding) {
 
     init {
         binding.player = player
@@ -50,14 +51,11 @@ class SKVideoView(
 
     fun setOnControllerVisibility(onControllerVisible:((visible: Boolean) -> Unit)?) {
         onControllerVisible?.let {
-            binding.setControllerVisibilityListener(object :ControllerVisibilityListener {
+            binding.setControllerVisibilityListener(object : ControllerVisibilityListener {
                 override fun onVisibilityChanged(visibility: Int) {
                     it.invoke(visibility == View.VISIBLE)
                 }
             })
-//            binding.setControllerVisibilityListener { visibility ->
-////                onControllerVisible()
-//            }
         }
     }
 
