@@ -1,22 +1,25 @@
 plugins {
-    kotlin("multiplatform")
     id("tech.skot.library-viewlegacy")
     signing
 }
 
 android {
+    compileSdk { version = release(36) }
     namespace = "tech.skot.libraries.skvideo.viewlegacy"
 }
 kotlin {
     jvmToolchain(17)
+    compilerOptions {
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3)
+    }
 }
 
 dependencies {
-    api("androidx.media3:media3-exoplayer:1.9.2")
-    api("androidx.media3:media3-ui:1.9.2")
-    api("androidx.media3:media3-session:1.9.2")
-    implementation("androidx.media:media:1.7.0")
-    implementation("androidx.lifecycle:lifecycle-process:2.10.0")
+    api(libs.media3.exoplayer)
+    api(libs.media3.ui)
+    api(libs.media3.session)
+    implementation(libs.androidx.media)
+    implementation(libs.lifecycle.process)
 }
 
 

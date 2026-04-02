@@ -3,7 +3,7 @@ buildscript {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
-//        mavenLocal()
+       mavenLocal()
 
     }
 
@@ -24,7 +24,7 @@ allprojects {
 
     repositories {
         google()
-//        mavenLocal()
+        mavenLocal()
         maven { setUrl("https://jitpack.io") }
         mavenCentral()
     }
@@ -32,20 +32,4 @@ allprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "org.jetbrains.dokka")
 
-}
-
-if(!localPublication) {
-    val publication = getPublication(project)
-
-    nexusPublishing {
-        repositories {
-            sonatype {
-                stagingProfileId.set(publication.sonatypeStagingProfileId)
-                username.set(publication.ossrhUsername)
-                password.set(publication.ossrhPassword)
-                nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-                snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-            }
-        }
-    }
 }
