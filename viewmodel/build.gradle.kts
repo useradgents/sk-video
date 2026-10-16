@@ -1,15 +1,10 @@
 plugins {
-    kotlin("multiplatform")
     id("tech.skot.library")
     signing
 }
 
-kotlin {
-    jvmToolchain(17)
-    android {
-        compileSdk = 36
-        namespace = "tech.skot.libraries.skvideo"
-    }
+android {
+    namespace = "tech.skot.libraries.skvideo"
 }
 tasks.dokkaHtmlPartial.configure {
     suppressInheritedMembers.set(true)

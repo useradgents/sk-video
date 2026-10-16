@@ -4,14 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk { version = release(36) }
     namespace = "tech.skot.libraries.skvideo.viewlegacy"
-}
-kotlin {
-    jvmToolchain(17)
-    compilerOptions {
-        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3)
-    }
 }
 
 dependencies {
