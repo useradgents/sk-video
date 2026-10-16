@@ -29,17 +29,17 @@ class TestViewSKAudio: SKTestView() {
 
     val track1 = SKAudioVC.Track(
         title = "track1",
-        url = "https://sounds-mp3.com/mp3/0011247.mp3",
+        uri = { "https://sounds-mp3.com/mp3/0011247.mp3" },
         image = null
     )
     val track2 = SKAudioVC.Track(
         title = "track2",
-        url = "https://sounds-mp3.com/mp3/0011272.mp3",
+        uri = { "https://sounds-mp3.com/mp3/0011272.mp3" },
         image = null
     )
     val track3 = SKAudioVC.Track(
         title = "track3",
-        url = "https://sounds-mp3.com/mp3/0011244.mp3",
+        uri = { "https://sounds-mp3.com/mp3/0011244.mp3" },
         image = null
     )
 
